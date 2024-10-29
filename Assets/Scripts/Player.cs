@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -8,10 +9,14 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     public bool isGrounded;
     public GameObject playerPiece;
+    int collected = 0;
+    public TextMeshProUGUI coinText;
+    public int coinsToCollect;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        coinText.text = collected.ToString() + "/" + coinsToCollect.ToString();
     }
 
     void Update()
@@ -49,6 +54,13 @@ public class Player : MonoBehaviour
         {
             GameManager.instance.Die();
         }
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            collected++;
+            coinText.text = collected.ToString() + "/" + coinsToCollect.ToString();
+            Destroy(other.gameObject);
+        }
+        
     }
 
     void OnCollisionExit2D(Collision2D other)
